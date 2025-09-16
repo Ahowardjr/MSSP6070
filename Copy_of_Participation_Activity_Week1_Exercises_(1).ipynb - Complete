@@ -1,0 +1,649 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Ahowardjr/MSSP6070/blob/main/Copy_of_Participation_Activity_Week1_Exercises_(1).ipynb%20-%20Complete\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_XbOYWEzkU5a"
+      },
+      "source": [
+        "# Coding exercises\n",
+        "Exercises 1-3 are thought exercises that don't require coding.\n",
+        "\n",
+        "1. Explore the Jupyter Lab interface and look at some of the shortcuts available. Don't worry about memorizing them now (eventually they will become second nature and save you a lot of time), just get comfortable using notebooks.\n",
+        "\n",
+        "2. Are all data normally distributed?\n",
+        "\n",
+        "3. When would it make more sense to use the median instead of the mean for the measure of center?"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "dvcj0g2vkU5d"
+      },
+      "source": [
+        "## Exercise 4: Generate the data by running this cell\n",
+        "This will give you a list of numbers to work with in the remaining exercises."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "FRdzl_GmkU5d",
+        "outputId": "422f0e97-4704-426d-eadf-8c861128c89c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[844000.0, 758000.0, 421000.0, 259000.0, 511000.0, 405000.0, 784000.0, 303000.0, 477000.0, 583000.0, 908000.0, 505000.0, 282000.0, 756000.0, 618000.0, 251000.0, 910000.0, 983000.0, 810000.0, 902000.0, 310000.0, 730000.0, 899000.0, 684000.0, 472000.0, 101000.0, 434000.0, 611000.0, 913000.0, 967000.0, 477000.0, 865000.0, 260000.0, 805000.0, 549000.0, 14000.0, 720000.0, 399000.0, 825000.0, 668000.0, 1000.0, 494000.0, 868000.0, 244000.0, 325000.0, 870000.0, 191000.0, 568000.0, 239000.0, 968000.0, 803000.0, 448000.0, 80000.0, 320000.0, 508000.0, 933000.0, 109000.0, 551000.0, 707000.0, 547000.0, 814000.0, 540000.0, 964000.0, 603000.0, 588000.0, 445000.0, 596000.0, 385000.0, 576000.0, 290000.0, 189000.0, 187000.0, 613000.0, 657000.0, 477000.0, 90000.0, 758000.0, 877000.0, 923000.0, 842000.0, 898000.0, 923000.0, 541000.0, 391000.0, 705000.0, 276000.0, 812000.0, 849000.0, 895000.0, 590000.0, 950000.0, 580000.0, 451000.0, 660000.0, 996000.0, 917000.0, 793000.0, 82000.0, 613000.0, 486000.0]\n"
+          ]
+        }
+      ],
+      "source": [
+        "import random\n",
+        "random.seed(0)\n",
+        "salaries = [round(random.random()*1000000, -3) for _ in range(100)]\n",
+        "print(list(salaries))"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "RJGrsFRFkU5e"
+      },
+      "source": [
+        "## Exercise 5: Calculating statistics and verifying\n",
+        "\n",
+        "Use the data generated above to calulate in code the following statistics without importing the statistics module. Then use the statistics module to verify your results.  Import the statistics module from https://docs.python.org/3/library/statistics.html\n",
+        "\n",
+        "### mean"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from statistics import median\n",
+        "from math import isnan\n",
+        "from itertools import filterfalse\n",
+        "\n",
+        "data = [20.7, float('NaN'),19.2, 18.3, float('NaN'), 14.4]\n",
+        "print(sorted(data))  # This has surprising behavior\n",
+        "# [20.7, nan, 14.4, 18.3, 19.2, nan] - This was a comment showing output\n",
+        "\n",
+        "print(median(data))  # This result is unexpected\n",
+        "# 16.35 - This was a comment showing output\n",
+        "\n",
+        "print(sum(map(isnan, data)))    # Number of missing values\n",
+        "# 2 - This was a comment showing output\n",
+        "clean = list(filterfalse(isnan, data))  # Strip NaN values\n",
+        "print(clean)\n",
+        "# [20.7, 19.2, 18.3, 14.4] - This was a comment showing output\n",
+        "print(sorted(clean))  # Sorting now works as expected\n",
+        "# [14.4, 18.3, 19.2, 20.7] - This was a comment showing output\n",
+        "print(median(clean))       # This result is now well defined\n",
+        "# 18.75 - This was a comment showing output"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "97WoCIArXNJc",
+        "outputId": "c6f98077-fb62-461e-f658-f5c9e9cfc273"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[20.7, nan, 14.4, 18.3, 19.2, nan]\n",
+            "16.35\n",
+            "2\n",
+            "[20.7, 19.2, 18.3, 14.4]\n",
+            "[14.4, 18.3, 19.2, 20.7]\n",
+            "18.75\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from statistics import median\n",
+        "from math import isnan\n",
+        "from itertools import filterfalse\n",
+        "\n",
+        "data = [20.7, float('NaN'),19.2, 18.3, float('NaN'), 14.4]\n",
+        "print(sorted(data))  # This has surprising behavior\n",
+        "# [20.7, nan, 14.4, 18.3, 19.2, nan] - This was a comment showing output\n",
+        "\n",
+        "print(median(data))  # This result is unexpected\n",
+        "# 16.35 - This was a comment showing output\n",
+        "\n",
+        "print(sum(map(isnan, data)))    # Number of missing values\n",
+        "# 2 - This was a comment showing output\n",
+        "clean = list(filterfalse(isnan, data))  # Strip NaN values\n",
+        "print(clean)\n",
+        "# [20.7, 19.2, 18.3, 14.4] - This was a comment showing output\n",
+        "print(sorted(clean))  # Sorting now works as expected\n",
+        "# [14.4, 18.3, 19.2, 20.7] - This was a comment showing output\n",
+        "print(median(clean))       # This result is now well defined\n",
+        "# 18.75 - This was a comment showing output"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "licNJsz4brWS",
+        "outputId": "60cce7ae-6eca-41f9-dac4-6fe2827b93a7"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[20.7, nan, 14.4, 18.3, 19.2, nan]\n",
+            "16.35\n",
+            "2\n",
+            "[20.7, 19.2, 18.3, 14.4]\n",
+            "[14.4, 18.3, 19.2, 20.7]\n",
+            "18.75\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "DX4ToC33kU5f"
+      },
+      "source": [
+        "### median"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*sum*(salaries) / len(salaries)"
+      ],
+      "metadata": {
+        "id": "G1LNvc_CXnwG"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sum(salaries) / len(salaries)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "p2lzfVameCN8",
+        "outputId": "559a6037-3e80-4c37-d7b8-63490069215b"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "585690.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "yQ-x90CDkU5f"
+      },
+      "source": [
+        "### mode"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "statistics_mode = statistics.mode(salaries)\n",
+        "print(statistics_mode)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_MeOPHOmZRw2",
+        "outputId": "3324d2fc-95f1-4213-cfd9-55178913e248"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "477000.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Z4vMaHTpkU5g"
+      },
+      "source": [
+        "### sample variance\n",
+        "Remember to use Bessel's correction."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "GtbHlHZGkU5g",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "dec3fd45-98a2-4236-f44f-59e2bd5df7af"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "70664054444.44444"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 21
+        }
+      ],
+      "source": [
+        "statistics.variance(salaries)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_UZr9pXukU5g"
+      },
+      "source": [
+        "### sample standard deviation\n",
+        "Remember to use Bessel's correction."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "Mes8i8zekU5g"
+      },
+      "outputs": [],
+      "source": [
+        "import statistics\n",
+        "import math\n",
+        "# The sample standard deviation is the square root of the sample variance\n",
+        "statistics_sample_std_dev = math.sqrt(statistics.variance(salaries))"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "tS_rGnkgkU5g"
+      },
+      "source": [
+        "## Exercise 6: Calculating more statistics\n",
+        "### range"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "ZFI4JibEkU5g",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "69096145-b22c-465b-ced6-660838af320d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "995000.0\n"
+          ]
+        }
+      ],
+      "source": [
+        "range = max(salaries) - min(salaries)\n",
+        "print(range)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "jR5AKegykU5g"
+      },
+      "source": [
+        "### coefficient of variation"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "-abG9VOYkU5h",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "d4c47bf8-6578-4ff5-af69-d6801ac48490"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0.45386998894439035\n"
+          ]
+        }
+      ],
+      "source": [
+        "variation = statistics_sample_std_dev / statistics.mean(salaries)\n",
+        "print(variation)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "xA2IwZ_3kU5h"
+      },
+      "source": [
+        "### interquartile range"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "tOsnzKoAkU5h",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "b5ad56f8-a453-4468-94ca-9a0cca268e6a"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "421750.0\n"
+          ]
+        }
+      ],
+      "source": [
+        "interquartile_range = statistics.quantiles(salaries)[2] - statistics.quantiles(salaries)[0]\n",
+        "print(interquartile_range)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Yd5FEn5SkU5h"
+      },
+      "source": [
+        "### quartile coefficent of dispersion"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "_9EDEqVMkU5h",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "f5f6aeb1-1512-4a86-d654-5f0086d71435"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0.7200908330345405\n"
+          ]
+        }
+      ],
+      "source": [
+        "quartile_coefficient_of_dispersion = interquartile_range / statistics.mean(salaries)\n",
+        "print(quartile_coefficient_of_dispersion)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "aKc_a7wKkU5h"
+      },
+      "source": [
+        "## Exercise 7: Scaling data\n",
+        "### min-max scaling"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "min_max_scaled = [x-min(salaries)/max(salaries)-min(salaries) for x in salaries]\n",
+        "print(min_max_scaled)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3Hr32_EEgz9F",
+        "outputId": "3be1d8fc-469e-4cfc-d761-cd3b0f5c8817"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[842999.998995984, 756999.998995984, 419999.9989959839, 257999.99899598394, 509999.9989959839, 403999.9989959839, 782999.998995984, 301999.9989959839, 475999.9989959839, 581999.998995984, 906999.998995984, 503999.9989959839, 280999.9989959839, 754999.998995984, 616999.998995984, 249999.99899598394, 908999.998995984, 981999.998995984, 808999.998995984, 900999.998995984, 308999.9989959839, 728999.998995984, 897999.998995984, 682999.998995984, 470999.9989959839, 99999.99899598393, 432999.9989959839, 609999.998995984, 911999.998995984, 965999.998995984, 475999.9989959839, 863999.998995984, 258999.99899598394, 803999.998995984, 547999.998995984, 12999.998995983935, 718999.998995984, 397999.9989959839, 823999.998995984, 666999.998995984, -0.0010040160642574847, 492999.9989959839, 866999.998995984, 242999.99899598394, 323999.9989959839, 868999.998995984, 189999.99899598394, 566999.998995984, 237999.99899598394, 966999.998995984, 801999.998995984, 446999.9989959839, 78999.99899598393, 318999.9989959839, 506999.9989959839, 931999.998995984, 107999.99899598393, 549999.998995984, 705999.998995984, 545999.998995984, 812999.998995984, 538999.998995984, 962999.998995984, 601999.998995984, 586999.998995984, 443999.9989959839, 594999.998995984, 383999.9989959839, 574999.998995984, 288999.9989959839, 187999.99899598394, 185999.99899598394, 611999.998995984, 655999.998995984, 475999.9989959839, 88999.99899598393, 756999.998995984, 875999.998995984, 921999.998995984, 840999.998995984, 896999.998995984, 921999.998995984, 539999.998995984, 389999.9989959839, 703999.998995984, 274999.9989959839, 810999.998995984, 847999.998995984, 893999.998995984, 588999.998995984, 948999.998995984, 578999.998995984, 449999.9989959839, 658999.998995984, 994999.998995984, 915999.998995984, 791999.998995984, 80999.99899598393, 611999.998995984, 484999.9989959839]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "21kjBOxMkU5h"
+      },
+      "source": [
+        "### standardizing"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "IYT1aomtkU5h",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "92068477-4423-4ac6-8531-6d4895ce97d8"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[0.9717217942267801, 0.6482032533127501, -0.6195380058503674, -1.228956652688424, -0.28097209094033604, -0.6797275018343729, 0.7460111842867592, -1.0634355387324086, -0.40887476990634786, -0.010119359012310937, 1.2124797781628023, -0.3035431519343381, -1.142434252211416, 0.6406795663147493, 0.12154516345270126, -1.2590514006804265, 1.220003465160803, 1.4946180405878284, 0.8438191152607681, 1.1899087171688003, -1.037102634239406, 0.5428716353407403, 1.178623186671799, 0.36982683438672426, -0.4276839874013496, -1.8233279255304788, -0.5706340403633628, 0.09521225895969881, 1.2312889956578041, 1.434428544603823, -0.40887476990634786, 1.0507205077057873, -1.2251948091894236, 0.8250098977657664, -0.1380220379783228, -2.150608309943509, 0.5052532003507368, -0.7022985628283751, 0.9002467677457734, 0.3096373384027187, -2.199512275430514, -0.34492343042334195, 1.0620060382027885, -1.285384305173429, -0.9806749817544008, 1.0695297252007891, -1.4847620106204475, -0.06654701149731616, -1.304193522668431, 1.4381903881028233, 0.8174862107677657, -0.517968231377358, -1.9023266390094862, -0.9994841992494026, -0.2922576214373371, 1.3065258656378111, -1.7932331775384762, -0.1304983509803221, 0.4563492348637323, -0.14554572497632348, 0.8588664892567696, -0.17187862946932592, 1.4231430141068218, 0.06511751096769604, 0.008689858482690806, -0.529253761874359, 0.038784606474693596, -0.7549643718143799, -0.03645226350531338, -1.112339504219413, -1.4922856976184482, -1.4998093846164489, 0.10273594595769951, 0.26825705991371485, -0.40887476990634786, -1.8647082040194827, 0.6482032533127501, 1.0958626296937914, 1.2689074306478076, 0.9641981072287793, 1.1748613431727988, 1.2689074306478076, -0.16811678597032556, -0.7323933108203778, 0.4488255478657316, -1.165005313205418, 0.8513428022587689, 0.9905310117217818, 1.1635758126757978, 0.016213545480691503, 1.370477205120817, -0.02140488950931198, -0.5066827008803569, 0.2795425904107159, 1.543522006074833, 1.2463363696538055, 0.7798677757777622, -1.8948029520114855, 0.10273594595769951, -0.37501817841534474]\n"
+          ]
+        }
+      ],
+      "source": [
+        "standardize = [(x-statistics.mean(salaries))/statistics.stdev(salaries) for x in salaries]\n",
+        "print(standardize)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "waST0SOpkU5h"
+      },
+      "source": [
+        "## Exercise 8: Calculating covariance and correlation\n",
+        "### covariance"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Calculate the covariance manually\n",
+        "# You need two lists of equal length to calculate covariance.\n",
+        "# Assuming 'salaries' is your first list and 'experience' is your second list.\n",
+        "# Since 'experience' is not defined, let's create a dummy list for demonstration purposes.\n",
+        "# In a real scenario, you would use your actual second dataset for 'experience'.\n",
+        "\n",
+        "# Create a dummy list for 'experience' of the same length as salaries\n",
+        "experience = list(range(len(salaries)))\n",
+        "\n",
+        "# Calculate the mean of both lists\n",
+        "mean_salaries = sum(salaries) / len(salaries)\n",
+        "mean_experience = sum(experience) / len(experience)\n",
+        "\n",
+        "# Calculate the sum of the products of the deviations from the mean\n",
+        "cov_sum = sum([(salaries[i] - mean_salaries) * (experience[i] - mean_experience) for i in range(len(salaries))])\n",
+        "\n",
+        "# Calculate the sample covariance (using Bessel's correction: divide by n-1)\n",
+        "sample_cov = cov_sum / (len(experience) - 1)\n",
+        "print(sample_cov)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 217
+        },
+        "id": "MCN4G64RiUbk",
+        "outputId": "a10b574d-79c7-4bf8-f488-0289e76ab7eb"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "TypeError",
+          "evalue": "'float' object is not callable",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipython-input-3035586242.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      6\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m \u001b[0;31m# Create a dummy list for 'experience' of the same length as salaries\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 8\u001b[0;31m \u001b[0mexperience\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mrange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msalaries\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      9\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     10\u001b[0m \u001b[0;31m# Calculate the mean of both lists\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mTypeError\u001b[0m: 'float' object is not callable"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "F5OZPyIwkU5h"
+      },
+      "source": [
+        "### Pearson correlation coefficient ($\\rho$)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "n1ffx5NCkU5h",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 163
+        },
+        "outputId": "2a636ce3-77d7-4364-bd27-dfc31f5b6488"
+      },
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "NameError",
+          "evalue": "name 'sample_cov' is not defined",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipython-input-3369479047.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mcorrelation_coefficient\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0msample_cov\u001b[0m \u001b[0;34m/\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0mstatistics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mstdev\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msalaries\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0mstatistics\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mstdev\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mexperience\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      2\u001b[0m \u001b[0mprint\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0mcorrelation_coefficient\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mNameError\u001b[0m: name 'sample_cov' is not defined"
+          ]
+        }
+      ],
+      "source": [
+        "# Calculate the covariance manually\n",
+        "# You need two lists of equal length to calculate covariance.\n",
+        "# Assuming 'salaries' is your first list and 'experience' is your second list.\n",
+        "# Since 'experience' is not defined, let's create a dummy list for demonstration purposes.\n",
+        "# In a real scenario, you would use your actual second dataset for 'experience'.\n",
+        "\n",
+        "# Create a dummy list for 'experience' of the same length as salaries\n",
+        "experience = list(range(len(salaries)))\n",
+        "\n",
+        "# Calculate the mean of both lists\n",
+        "mean_salaries = sum(salaries) / len(salaries)\n",
+        "mean_experience = sum(experience) / len(experience)\n",
+        "\n",
+        "# Calculate the sum of the products of the deviations from the mean\n",
+        "cov_sum = sum([(salaries[i] - mean_salaries) * (experience[i] - mean_experience) for i in range(len(salaries))])\n",
+        "\n",
+        "# Calculate the sample covariance (using Bessel's correction: divide by n-1)\n",
+        "sample_cov = cov_sum / (len(experience) - 1)\n",
+        "\n",
+        "import statistics\n",
+        "correlation_coefficient = sample_cov / (statistics.stdev(salaries) * statistics.stdev(experience))\n",
+        "print (correlation_coefficient)"
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.9.16"
+    },
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
